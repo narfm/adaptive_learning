@@ -1,0 +1,144 @@
+# 🧩 UI Wireframe Flow
+
+## 1. Splash Screen
+- Animated app logo appears.
+- Friendly loading animation (e.g., spinning sun, bouncing ball).
+- Short welcoming phrase (e.g., "Let's Learn and Play!").
+
+---
+
+## 2. Age/Grade Selection Screen (First time only or in settings)
+- "How old are you?" (Large number buttons: 4–16)
+- "Select your Grade" (Dropdown or simple list)
+- Cute illustration for young kids / Sleek icons for older users.
+
+➡️ Save to Profile
+
+---
+
+## 3. Home Screen (Adaptive Layout)
+
+### Younger Kids (4–7):
+- Big, colorful buttons for subjects (Math, Science, Art).
+- Friendly animated character waving hello.
+- "Today's Fun Lesson" Highlight card (with a sparkle animation).
+
+### Older Kids (8–16):
+- Tabbed layout: Subjects | Games | Progress
+- Clean and organized tiles for topics under subjects.
+- Quick Access: "Continue where you left off" card at top.
+
+---
+
+## 4. Subject Selection
+- Show categories: Math, Science, History, etc.
+- Each subject shown as an **Icon + Name**.
+
+➡️ Tap a Subject
+
+---
+
+## 5. Topic List
+- List of topics under selected subject.
+- Example:
+  - Addition (for Math)
+  - Photosynthesis (for Science)
+- For young kids: show colorful icons next to topic names.
+- For older students: include a short 1-line description under topic.
+
+➡️ Tap a Topic
+
+---
+
+## 6. AI Teacher Introduction Screen
+- Friendly animated character (Alex) appears.
+- Voice + Subtitle: "Hi Alex/Lily! Let's learn about Addition/Photosynthesis!"
+- Small animation in background (e.g., apples falling, sun shining).
+
+➡️ Tap "Start Learning"
+
+---
+
+## 7. Lesson Screen
+
+**Dynamic depending on age:**
+
+### For 4–7 Years:
+- Simple scenes (apples, stars, bees).
+- Bright colors.
+- Voice explains slowly.
+- Small animations after each sentence.
+- Interactive: Tap objects (e.g., count apples).
+
+### For 8–16 Years:
+- Detailed diagrams (labeled diagrams for science, step-by-step math).
+- Animations with arrows, flows.
+- Interactive: Tap hotspots for definitions.
+- Highlight key terms.
+
+---
+
+## 8. Interactive Learning Card
+
+- Question presented (e.g., "What is 2+1?" / "What are the reactants in photosynthesis?")
+- Multiple-choice buttons.
+- Voice prompt: "Can you tell me the answer?"
+
+**Interaction Modes:**
+- Tap to select
+- Speak the answer (optional)
+- Type short answers (older kids)
+
+➡️ Correct = Stars/confetti 🎉  
+➡️ Wrong = Gentle hint + retry
+
+---
+
+## 9. Mini Game / Simulation (after lessons)
+
+**Examples:**
+- Match bees to flowers (counting game for kids).
+- Simulate sunlight/water levels (science experiment for teens).
+- Label parts of a plant cell (drag and drop).
+
+➡️ Score / Celebration Animation
+
+---
+
+## 10. Progress Tracking Screen
+- Show badges earned.
+- List topics completed.
+- Streak counter ("You've learned for 5 days in a row!").
+
+---
+
+## 11. Settings/Profile
+- Edit name, age, preferences.
+- Switch AI Teacher (different characters unlocked at higher levels).
+- Turn on/off voice prompts.
+
+---
+
+# 📈 Quick Visual Layout Map
+
+```plaintext
+Splash Screen
+    ↓
+Age Selection → Home Screen
+    ↓                 ↓
+Subject Selection     Progress Tracker
+    ↓
+Topic List
+    ↓
+AI Teacher Intro
+    ↓
+Lesson Screen
+    ↓
+Interactive Learning
+    ↓
+Mini Game / Simulation
+    ↓
+Back to Home Screen
+```
+
+

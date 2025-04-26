@@ -1,0 +1,83 @@
+Alright, let's zoom in **only** on the **Splash Screen** and define it in detail:
+
+---
+
+# 🎯 Splash Screen Specification
+
+### 1. Purpose:
+- Create an immediate, **friendly**, **inviting**, and **child-appropriate** welcome.
+- Establish the **brand** (fun + learning) quickly.
+- Smoothly transition into age selection/home screen after a few seconds or tap.
+
+---
+
+### 2. Visual Layout:
+
+```
++------------------------------------------------+
+|                                                |
+|           [ Animated App Mascot ]              |
+|        (Waving, blinking, smiling)             |
+|                                                |
+|            App Name in Big Fun Font            |
+|        "Learn & Play!" (Tagline)               |
+|                                                |
+|         [ Loading Spinner / Animation ]        |
++------------------------------------------------+
+```
+
+---
+
+### 3. UI Elements:
+
+| Element           | Details                                                                                  |
+|-------------------|------------------------------------------------------------------------------------------|
+| **Background**     | Light gradient (ex: Sky blue to white) or a fun solid color (pastel tones).              |
+| **Mascot Animation** | Vector or Lottie Animation. Friendly character (like Alex) waving or smiling.           |
+| **App Name**       | Big, colorful, rounded font. Example: *“BrightMind”* or *“LearnPlay”*.                   |
+| **Tagline**        | Smaller subtitle under the app name. Friendly tone: *“Let's Learn & Play!”*              |
+| **Loading Indicator** | Simple animated spinner, progress bar, or playful animation (bouncing ball, floating stars). |
+| **Audio (optional)** | A short friendly sound (e.g., gentle chime or mascot saying “Hello!”).                  |
+
+---
+
+### 4. Timing and Behavior:
+
+| Behavior                      | Details                                                      |
+|--------------------------------|--------------------------------------------------------------|
+| **Duration**                   | Display for 2–4 seconds or until assets are loaded.          |
+| **Skip Option**                | Optional: Tap anywhere to skip immediately to next screen.   |
+| **Auto-Navigation**            | Automatically transition to **Age/Grade Selection** screen. |
+
+---
+
+### 5. Animations:
+
+- **Fade In** the background first (0.5s).
+- **Bounce In** the mascot after 0.5s.
+- **Slide Up** app name and tagline after 1s.
+- **Pulse** or subtle animation on loading spinner.
+
+---
+
+### 6. Flutter Implementation Notes:
+
+- **Use**: `SplashScreen`, `Lottie`, or a simple `AnimatedContainer` with custom animations.
+- **Packages** to consider:
+  - `lottie`
+  - `animated_splash_screen`
+- **Ensure** that assets (mascot, sounds) are preloaded efficiently to prevent delays.
+
+---
+
+### 🎨 Example Color Palette:
+
+- Background: `#C9E4FF` (light sky blue)
+- Primary Accent: `#FFB703` (gold/yellow)
+- Secondary Accent: `#219EBC` (medium blue)
+- Text: Dark gray or navy (`#023047`)
+
+---
+
+Would you also like me to create a **rough Flutter widget code** for this Splash Screen next? 🚀  
+(so you can directly plug it into your project!)

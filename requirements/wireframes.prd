@@ -1,0 +1,163 @@
+**Visual Wireframes for Learning App (Flutter, Adaptive by Age)**
+
+---
+
+# 1. Splash Screen
+
+```
++------------------------------+
+|          App Logo            |
+|      (Animated Character)    |
+|                              |
+|    "Let's Learn and Play!"    |
++------------------------------+
+```
+
+---
+
+# 2. Age/Grade Selection
+
+```
++------------------------------+
+|  How old are you?             |
+|  [ 4 ] [ 5 ] [ 6 ] [ 7 ]      |
+|  [ 8 ] [ 9 ] ... [16+]        |
+|                              |
+|  Select Grade: [Dropdown]     |
+|  [ Continue Button ]          |
++------------------------------+
+```
+
+---
+
+# 3. Home Screen
+
+**For 4-7 years (Simple, colorful)**
+```
++------------------------------+
+| Animated Alex Waving         |
+|                              |
+|  [Math]  [Science] [Art]      |
+|                              |
+|  Today's Fun Lesson!         |
++------------------------------+
+```
+
+**For 8-16 years (Tabbed, organized)**
+```
++------------------------------+
+| Tabs: [Subjects] [Games] [Progress] |
+| "Continue where you left off" Card |
+| Subject Tiles:                  |
+| [Math] [Science] [History]       |
++------------------------------+
+```
+
+---
+
+# 4. Subject Selection
+
+```
++------------------------------+
+|  [Icon] Math                 |
+|  [Icon] Science              |
+|  [Icon] History              |
++------------------------------+
+```
+
+---
+
+# 5. Topic List
+
+```
++------------------------------+
+|  Addition (Icon + Title)      |
+|  Photosynthesis (Icon + Desc) |
+|  Gravity (Icon + Desc)        |
++------------------------------+
+```
+
+---
+
+# 6. AI Teacher Introduction
+
+```
++------------------------------+
+| Animated Alex Talking        |
+| "Hi Lily! Today we learn..."  |
+| [ Start Learning Button ]     |
++------------------------------+
+```
+
+---
+
+# 7. Lesson Screen
+
+**For 4-7 years:**
+```
++------------------------------+
+|  Animated Apples Falling     |
+|  "2 + 1 = ?"                 |
+|  [Options: 1] [2] [3] [4]     |
++------------------------------+
+```
+
+**For 8-16 years:**
+```
++------------------------------+
+|  Chloroplast Diagram          |
+|  Label: Sunlight → Leaf      |
+|  "Where does Photosynthesis happen?" |
+|  [Options: Stroma/Chloroplast/Nucleus] |
++------------------------------+
+```
+
+---
+
+# 8. Interactive Card
+
+```
++------------------------------+
+|  Question: "Count the bees!" |
+|  Picture of Bees Flying       |
+|  [ Speak Answer ] [ Tap Number ] |
++------------------------------+
+```
+
+---
+
+# 9. Mini Game / Simulation
+
+```
++------------------------------+
+|  Game: Drag Bees to Flowers  |
+|  Add more sunlight to speed photosynthesis |
++------------------------------+
+```
+
+---
+
+# 10. Progress Tracker
+
+```
++------------------------------+
+|  Your Streak: 5 days!         |
+|  Badges:                     |
+|  ★ Addition Master          |
+|  ★ Photosynthesis Expert    |
++------------------------------+
+```
+
+---
+
+# 11. Settings/Profile
+
+```
++------------------------------+
+|  Name: Lily                  |
+|  Age: 5                      |
+|  Change AI Teacher Avatar    |
+|  Enable/Disable Voice         |
++------------------------------+
+```
+

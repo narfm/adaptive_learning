@@ -1,0 +1,138 @@
+# 📋 PRD for Age/Grade Selection Screen
+
+---
+
+## 🎯 Purpose:
+- Quickly and visually let the user (or their parent) **select their age or grade**.
+- Drive how the rest of the app adapts (teaching style, UI, voice tone, difficulty).
+- **Must feel friendly** to both very young kids (5 years old) **and** mature enough for teens (14+).
+
+---
+
+## 📱 User Interface (UI) Layout:
+
+```
++------------------------------------------------+
+| [ App Logo Top Left ]         [ Settings Icon ]|
+|                                                |
+|           "How old are you?" (Header Text)     |
+|                                                |
+|     [ Cute Age Buttons: 5, 6, 7, 8, 9...]       |
+|     (Large colorful buttons with big numbers)  |
+|                                                |
+|     [ or ]                                      |
+|                                                |
+|           "Choose your Grade" (Subheader)      |
+|     [ Grade Level Buttons: 1st, 2nd, 3rd... ]   |
+|                                                |
+|     [ "I am a Parent/Teacher" (small link) ]    |
+|                                                |
++------------------------------------------------+
+```
+
+---
+
+## 🛠️ UI Elements:
+
+| Element                    | Details |
+|-----------------------------|---------|
+| **Header Title**            | “How old are you?” or “Choose your grade” in **large, bold, friendly font**. |
+| **Age Selection Buttons**   | Large, rounded, colorful buttons with **ages (5, 6, 7...14+)**. |
+| **Grade Selection Buttons** | Alternative view: "1st Grade", "2nd Grade" etc. Maybe toggleable. |
+| **Icons on Buttons**        | Optional: Small icon of a book, backpack, etc., beside the number. |
+| **Parent/Teacher Mode**     | Small clickable link for adults configuring the app for a child. |
+| **Settings Icon**           | Top right, small gear icon for quick access to language, audio settings. |
+
+---
+
+## 🎨 Style Guide:
+
+| Item        | Spec |
+|-------------|------|
+| Font        | Rounded, friendly, easy-to-read. |
+| Colors      | Bright but not neon. Use color coding by age group if possible (example: lighter colors for younger kids). |
+| Button Size | Large touch targets for small fingers (min 48x48px). |
+| Icons       | Simple and intuitive (no complicated details). |
+
+---
+
+## 🔥 Behavior:
+
+| Action                      | Result |
+|------------------------------|--------|
+| Tap on Age                   | App stores selected age → Proceeds to **personalized onboarding**. |
+| Tap on Grade                 | Same flow — app sets grade → Moves to onboarding. |
+| Tap "Parent/Teacher"         | App navigates to a **Setup Mode** (config options for kids). |
+| Tap Settings Icon            | Opens **Settings Drawer** without leaving page. |
+
+**Transitions**: 
+- Fun animations when selecting age (button bounce or glow).
+- Smooth fade or slide to the next screen.
+
+---
+
+## 🧠 Intelligence:
+
+- If age is **5–7** → Use **younger kid-friendly UI**, voice, examples.
+- If age is **8–10** → Adjust language to slightly more mature but still playful.
+- If age is **11–14** → Mature tone, more detailed learning, complex examples.
+
+Stored preferences could look like:
+
+```json
+{
+  "userAge": 8,
+  "userGrade": "3rd",
+  "uiLevel": "child",
+  "difficultyProfile": "early-elementary"
+}
+```
+
+---
+
+## 🧪 Edge Cases:
+
+| Case                                | Handling |
+|-------------------------------------|----------|
+| User doesn’t pick an age/grade      | Disable "Next" button until selection is made. |
+| Wrong selection (mis-tap)           | Allow immediate change — no "Confirm" needed. |
+| Very young child (understanding difficulty) | Let Parent/Teacher Mode intervene easily. |
+
+---
+
+## 🛠️ Technical Notes for Flutter:
+
+- Use `GridView` or `Wrap` layout for Age and Grade buttons.
+- Use responsive sizing (`MediaQuery`) to handle mobile vs. web views.
+- Local asset images/icons for offline speed.
+- Save selected age/grade using `Provider`, `Riverpod`, or simple local storage (`shared_preferences`).
+
+---
+
+# 🖼️ Quick Wireframe:
+
+```
++------------------------------------------------+
+| Logo                     Settings Gear        |
+|                                                |
+|     "How old are you?"                         |
+|                                                |
+| [ 5 ]  [ 6 ]  [ 7 ]  [ 8 ]                     |
+| [ 9 ] [ 10 ] [ 11 ] [ 12 ]                     |
+| [ 13 ] [ 14+ ]                                 |
+|                                                |
+|  OR                                             |
+|                                                |
+|     "Select your grade"                        |
+| [ 1st ] [ 2nd ] [ 3rd ] [ 4th ]                 |
+| [ 5th ] [ 6th ] [ 7th ] [ 8th ]                 |
+|                                                |
+| [ "I'm a Parent/Teacher" link at bottom ]       |
++------------------------------------------------+
+```
+
+---
+
+# 🚀 Summary:
+
+**Goal**: Make age/grade selection super simple, fun, fast, and a foundation for an adaptive learning experience.
