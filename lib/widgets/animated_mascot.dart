@@ -11,6 +11,9 @@ class AnimatedMascot extends StatefulWidget {
   
   /// Optional callback when the animation completes
   final Function? onComplete;
+  
+  /// Optional custom message for the speech bubble
+  final String? customMessage;
 
   /// Available mascot states
   static const String idle = 'idle';
@@ -23,6 +26,7 @@ class AnimatedMascot extends StatefulWidget {
     required this.state,
     required this.controller,
     this.onComplete,
+    this.customMessage,
   }) : super(key: key);
 
   @override
@@ -33,42 +37,41 @@ class _AnimatedMascotState extends State<AnimatedMascot> {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      alignment: Alignment.center,
-      children: [
-        // Main mascot animation
-        Lottie.asset(
-          'assets/animations/mascot.json',
-          controller: widget.controller,
-          width: 150,
-          height: 150,
-          fit: BoxFit.contain,
-          onLoaded: (composition) {
-            // Configure the animation controller
-            widget.controller.duration = composition.duration;
-            
-            // Start the animation
-            if (!widget.controller.isAnimating) {
-              widget.controller.forward();
-            }
-            
-            // Set up completion callback
-            if (widget.onComplete != null) {
-              widget.controller.addStatusListener((status) {
-                if (status == AnimationStatus.completed) {
-                  widget.onComplete!();
+        alignment: Alignment.center,
+        children: [
+          // Main mascot animation
+          Lottie.asset(
+              'assets/animations/mascot.json',
+              controller: widget.controller,
+              width: 350,
+              height: 150,
+              fit: BoxFit.contain,
+              onLoaded: (composition) {
+                // Configure the animation controller
+                widget.controller.duration = composition.duration;
+                
+                // Start the animation
+                if (!widget.controller.isAnimating) {
+                  widget.controller.forward();
                 }
-              });
-            }
-          },
-        ),
-        
-        // Speech bubble (only shown in certain states)
-        if (widget.state == AnimatedMascot.waving || widget.state == AnimatedMascot.thinking)
-          Positioned(
-            top: 20,
-            right: 0,
-            child: _buildSpeechBubble(),
+                
+                // Set up completion callback
+                if (widget.onComplete != null) {
+                  widget.controller.addStatusListener((status) {
+                    if (status == AnimationStatus.completed) {
+                      widget.onComplete!();
+                    }
+                  });
+                }
+              },
           ),
+          
+          // Speech bubble (only shown in certain states)
+          if (widget.state == AnimatedMascot.waving || widget.state == AnimatedMascot.thinking)
+            Positioned(
+              top: 00, // Move up from the center of the stack
+              child: _buildSpeechBubble(),
+            ),
       ],
     );
   }
@@ -77,18 +80,24 @@ class _AnimatedMascotState extends State<AnimatedMascot> {
   Widget _buildSpeechBubble() {
     String message = '';
     
-    switch (widget.state) {
-      case AnimatedMascot.waving:
-        message = 'How old are you?';
-        break;
-      case AnimatedMascot.thinking:
-        message = 'Hmm...';
-        break;
-      default:
-        return const SizedBox.shrink(); // No speech bubble for other states
+    // Use custom message if provided, otherwise use default based on state
+    if (widget.customMessage != null) {
+      message = widget.customMessage!;
+    } else {
+      switch (widget.state) {
+        case AnimatedMascot.waving:
+          message = 'How old are you?';
+          break;
+        case AnimatedMascot.thinking:
+          message = 'Hmm...';
+          break;
+        default:
+          return const SizedBox.shrink(); // No speech bubble for other states
+      }
     }
     
     return Container(
+      margin: const EdgeInsets.only(bottom: 10), // Add some space between the bubble and mascot
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       decoration: BoxDecoration(
         color: Colors.white,

@@ -339,6 +339,7 @@ class _TeacherIntroductionScreenState extends State<TeacherIntroductionScreen>
                     AnimatedMascot(
                       state: _mascotState,
                       controller: _mascotController,
+                      customMessage: "Hi there! I'm Alex, your learning buddy!",
                     ),
                     
                     const SizedBox(height: 30),

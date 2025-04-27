@@ -236,6 +236,7 @@ class _AgeGradeSelectionScreenState extends State<AgeGradeSelectionScreen> with 
                     AnimatedMascot(
                       state: _mascotState,
                       controller: _mascotController,
+                      customMessage: _showGradeSelection ? 'Select your grade' : 'How old are you?',
                     ),
                     
                     const SizedBox(height: 20),

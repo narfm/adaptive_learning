@@ -260,6 +260,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     AnimatedMascot(
                       state: _mascotState,
                       controller: _mascotController,
+                      customMessage: "What would you like to learn today?",
                     ),
                     const Spacer(),
                   ],
