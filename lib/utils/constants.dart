@@ -1,5 +1,40 @@
 import 'package:flutter/material.dart';
 
+/// Constants for the home screen
+class HomeConstants {
+  // Text styles
+  static const TextStyle greetingStyle = TextStyle(
+    fontSize: 24.0,
+    fontWeight: FontWeight.bold,
+    color: SplashConstants.textColor,
+    letterSpacing: 0.5,
+  );
+  
+  static const TextStyle sectionTitleStyle = TextStyle(
+    fontSize: 20.0,
+    fontWeight: FontWeight.w600,
+    color: SplashConstants.textColor,
+    letterSpacing: 0.5,
+  );
+  
+  static const TextStyle motivationalMessageStyle = TextStyle(
+    fontSize: 16.0,
+    fontWeight: FontWeight.w500,
+    color: SplashConstants.textColor,
+  );
+  
+  // Button dimensions
+  static const double mainButtonHeight = 60.0;
+  static const double mainButtonRadius = 15.0;
+  static const double topicCardWidth = 100.0;
+  static const double topicCardHeight = 120.0;
+  static const double topicCardRadius = 15.0;
+  
+  // Animation durations
+  static const Duration buttonHoverDuration = Duration(milliseconds: 150);
+  static const Duration cardTapDuration = Duration(milliseconds: 200);
+}
+
 /// Constants for the splash screen
 class SplashConstants {
   /// Color palette as specified in requirements
