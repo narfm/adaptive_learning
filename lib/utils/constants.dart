@@ -69,6 +69,32 @@ class SplashConstants {
   static const String tagline = "Let's Learn & Play!";
 }
 
+/// Constants for the Teacher Introduction screen
+class TeacherIntroConstants {
+  // Animation durations
+  static const Duration fadeInDuration = Duration(milliseconds: 500);
+  static const Duration textTypingDuration = Duration(milliseconds: 800);
+  static const Duration buttonPulseDuration = Duration(milliseconds: 1000);
+  static const Duration autoTimerDuration = Duration(seconds: 10);
+  
+  // Text styles
+  static const TextStyle welcomeTextStyle = TextStyle(
+    fontSize: 20.0,
+    fontWeight: FontWeight.w500,
+    color: SplashConstants.textColor,
+    height: 1.4,
+  );
+  
+  // Button styles for different age groups
+  static const double youngButtonRadius = 30.0;
+  static const double middleButtonRadius = 25.0;
+  static const double olderButtonRadius = 20.0;
+  
+  // Background animation properties
+  static const double backgroundElementOpacity = 0.4;
+  static const double animationAmplitude = 10.0;
+}
+
 /// Constants for the Age/Grade Selection screen
 class AgeGradeConstants {
   // Color palette for different age groups

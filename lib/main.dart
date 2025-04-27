@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'screens/splash_screen.dart';
 import 'screens/age_grade_selection_screen.dart';
+import 'screens/teacher_introduction_screen.dart';
 import 'screens/home_screen.dart';
 import 'utils/constants.dart';
 
@@ -27,7 +28,9 @@ class MyApp extends StatelessWidget {
       ),
       home: SplashScreen(
         nextScreen: AgeGradeSelectionScreen(
-          nextScreen: const HomeScreen(),
+          nextScreen: TeacherIntroductionScreen(
+            nextScreen: const HomeScreen(),
+          ),
         ),
       ),
     );

@@ -1,0 +1,62 @@
+# PRD: AI Teacher Introduction Screen
+
+## 1. Purpose
+The AI Teacher Introduction Screen is the first personalized touchpoint after a user selects their age/grade. It introduces a friendly AI teacher character who sets the tone for the learning experience by welcoming the user and briefly introducing the learning journey.
+
+## 2. User Stories
+- As a 5-year-old user, I want a fun, animated character to greet me warmly so I feel excited to learn.
+- As an 8th-grade user, I want a cooler, slightly more mature character to explain what I’ll be learning in a way I can relate to.
+- As a parent, I want my child to immediately feel comfortable, engaged, and safe.
+
+## 3. Features
+| Feature | Description |
+|:--------|:------------|
+| Animated AI Teacher Avatar | A character (different styles depending on age/grade) animated to wave, smile, and talk (lip sync or simple gestures). |
+| Text Bubble + Voiceover | Friendly greeting with matching animated text bubble and clear voice narration. |
+| Age-Appropriate Messaging | Short, engaging welcome message tuned to the selected age group/grade. |
+| Name Personalization | If name input is available, the AI teacher addresses the user by their name ("Hi, Lily!"). |
+| Background Animation | Light, non-distracting animated background like floating stars, classroom scene, or nature depending on theme. |
+| "Let's Start" Button | A large, colorful button for the user to proceed to the first lesson/topic. |
+| Auto-Continue Timer (optional) | If no input is given for 10 seconds, soft animation reminds user to tap "Let's Start." |
+
+## 4. Age/Grade Adaptation
+| Age Group | Style | Tone of Voice | Avatar Look |
+|:---------|:------|:--------------|:------------|
+| 4–7 Years | Very colorful, cartoonish | High-energy, very friendly, playful | Bright, childlike, big expressive eyes |
+| 8–11 Years | Still colorful but slightly more mature | Friendly, slightly informative | Cartoon but a little cooler look |
+| 12–14 Years | Semi-realistic or stylized cool | Friendly but respectful, not too childish | Teen-friendly casual avatar (hoodie, backpack, etc.) |
+
+## 5. UI Components
+- **AI Teacher Avatar** (center or slightly to the side)
+- **Welcome Text** (large, readable, animated or appearing with bounce/fade-in effects)
+- **Voice Playback Controls** (optional; replay/volume control)
+- **"Let's Start" CTA Button** (large, bright, with a hover or pulse animation)
+- **Background Decorations** (low-opacity to not distract)
+
+## 6. Voice and Audio
+- Pre-recorded audio clips for each age group
+- Friendly tone
+- Clear articulation and pacing depending on user’s age
+
+Example:
+- **5-year-old**: "Hi Lily! I’m Alex! We're going to have so much fun learning today! Are you ready? Let’s go!"
+- **14-year-old**: "Hey Alex! Welcome back. Let’s dive into today’s cool science adventure!"
+
+## 7. States
+| State | Description |
+|:------|:------------|
+| Default | AI Teacher appears, welcomes user, "Let's Start" button visible |
+| No Action for 10s | Subtle hint animation (avatar waving, button pulsing) |
+| Button Tap | Transition animation to the next screen (like zoom-out effect) |
+
+## 8. Animation Specs
+- Character Entrance: 1-second fade-in + slight bounce.
+- Text Appearance: Typing effect (letter by letter) or simple fade.
+- Button Animation: Gentle pulsation every 5 seconds if idle.
+- Background Animation: Slow moving clouds, sparkles, or subtle lighting.
+
+## 9. Technical Requirements
+- Flutter animated widgets (e.g., Lottie, Flare, Rive)
+- Text-to-Speech (TTS) fallback if pre-recorded audio not available
+- Device mic permissions NOT required on this screen
+
