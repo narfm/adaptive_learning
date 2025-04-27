@@ -28,9 +28,7 @@ class MyApp extends StatelessWidget {
       ),
       home: SplashScreen(
         nextScreen: AgeGradeSelectionScreen(
-          nextScreen: TeacherIntroductionScreen(
-            nextScreen: const HomeScreen(),
-          ),
+          nextScreen: const HomeScreen(),
         ),
       ),
     );

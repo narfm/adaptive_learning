@@ -11,10 +11,14 @@ import '../widgets/animated_mascot.dart';
 class TeacherIntroductionScreen extends StatefulWidget {
   /// The widget to navigate to after the introduction
   final Widget nextScreen;
+  
+  /// The name of the topic that was selected
+  final String topicName;
 
   const TeacherIntroductionScreen({
     Key? key,
     required this.nextScreen,
+    required this.topicName,
   }) : super(key: key);
 
   @override
@@ -165,22 +169,14 @@ class _TeacherIntroductionScreenState extends State<TeacherIntroductionScreen>
     );
   }
 
-  /// Get the welcome message based on the user's age/grade
+  /// Get the welcome message based on the user's age/grade and selected topic
   String _getWelcomeMessage() {
     if (_userProfile == null) return "Hi there! Let's learn together!";
     
     String greeting = _userName.isNotEmpty ? "Hi $_userName!" : "Hi there!";
     
-    switch (_userProfile!.uiLevel) {
-      case 'young':
-        return "$greeting I'm Alex! We're going to have so much fun learning today! Are you ready? Let's go!";
-      case 'middle':
-        return "$greeting I'm Alex! Ready to explore some cool new topics together? Let's get started!";
-      case 'older':
-        return "$greeting I'm Alex! Welcome to your learning adventure. Let's dive into today's cool science topics!";
-      default:
-        return "$greeting I'm Alex! Ready to learn something new today?";
-    }
+    // Include the topic name in the welcome message
+    return "$greeting Let's learn about ${widget.topicName}!";
   }
 
   /// Get the background decoration based on the user's age/grade
@@ -339,7 +335,7 @@ class _TeacherIntroductionScreenState extends State<TeacherIntroductionScreen>
                     AnimatedMascot(
                       state: _mascotState,
                       controller: _mascotController,
-                      customMessage: "Hi there! I'm Alex, your learning buddy!",
+                      customMessage: "Hi there! I'm Alex, your learning buddy! Let's learn about ${widget.topicName}!",
                     ),
                     
                     const SizedBox(height: 30),
@@ -424,10 +420,17 @@ class _TeacherIntroductionScreenState extends State<TeacherIntroductionScreen>
     );
   }
 
-  /// Build the background animations
+  /// Build the background animations based on user age and selected topic
   Widget _buildBackgroundAnimations() {
     if (_userProfile == null) return const SizedBox.shrink();
     
+    // First, check if we should show a topic-specific animation
+    Widget? topicAnimation = _buildTopicSpecificAnimation();
+    if (topicAnimation != null) {
+      return topicAnimation;
+    }
+    
+    // If no topic-specific animation, fall back to age-based animations
     switch (_userProfile!.uiLevel) {
       case 'young':
         return _buildYoungBackgroundAnimation();
@@ -438,6 +441,196 @@ class _TeacherIntroductionScreenState extends State<TeacherIntroductionScreen>
       default:
         return const SizedBox.shrink();
     }
+  }
+  
+  /// Build a topic-specific animation based on the selected topic
+  Widget? _buildTopicSpecificAnimation() {
+    String topic = widget.topicName.toLowerCase();
+    
+    // Math-related topics
+    if (topic.contains('addition') || 
+        topic.contains('multiplication') || 
+        topic.contains('algebra') || 
+        topic.contains('fractions')) {
+      return _buildMathAnimation();
+    }
+    
+    // Science-related topics
+    else if (topic.contains('photosynthesis') || 
+             topic.contains('plants') || 
+             topic.contains('science') || 
+             topic.contains('biology')) {
+      return _buildScienceAnimation();
+    }
+    
+    // Animal-related topics
+    else if (topic.contains('animals')) {
+      return _buildAnimalsAnimation();
+    }
+    
+    // Return null if no specific animation for this topic
+    return null;
+  }
+  
+  /// Build an animation for math-related topics
+  Widget _buildMathAnimation() {
+    return Stack(
+      children: [
+        // Falling numbers and math symbols
+        Positioned(
+          top: 40,
+          left: 30,
+          child: _buildAnimatedMathElement('+', 30, 3000, 0),
+        ),
+        Positioned(
+          top: 100,
+          right: 40,
+          child: _buildAnimatedMathElement('=', 25, 3500, 500),
+        ),
+        Positioned(
+          bottom: 200,
+          left: 50,
+          child: _buildAnimatedMathElement('7', 28, 4000, 1000),
+        ),
+        Positioned(
+          bottom: 150,
+          right: 60,
+          child: _buildAnimatedMathElement('×', 32, 3500, 1500),
+        ),
+        Positioned(
+          top: 180,
+          left: 100,
+          child: _buildAnimatedMathElement('3', 26, 4500, 2000),
+        ),
+      ],
+    );
+  }
+  
+  /// Build an animation for science/photosynthesis-related topics
+  Widget _buildScienceAnimation() {
+    return Stack(
+      children: [
+        // Sun, plants, and science elements
+        Positioned(
+          top: 40,
+          right: 40,
+          child: _buildAnimatedSun(50, 5000),
+        ),
+        Positioned(
+          bottom: 100,
+          left: 30,
+          child: _buildAnimatedPlant(40, 4000),
+        ),
+        Positioned(
+          top: 150,
+          left: 50,
+          child: _buildAnimatedClassroomElement(Icons.eco, 30, 3500, 500),
+        ),
+        Positioned(
+          bottom: 200,
+          right: 70,
+          child: _buildAnimatedClassroomElement(Icons.water_drop, 25, 4500, 1000),
+        ),
+      ],
+    );
+  }
+  
+  /// Build an animation for animal-related topics
+  Widget _buildAnimalsAnimation() {
+    return Stack(
+      children: [
+        // Animal silhouettes
+        Positioned(
+          top: 50,
+          left: 30,
+          child: _buildAnimatedClassroomElement(Icons.pets, 35, 4000, 0),
+        ),
+        Positioned(
+          top: 120,
+          right: 40,
+          child: _buildAnimatedClassroomElement(Icons.cruelty_free, 30, 3500, 500),
+        ),
+        Positioned(
+          bottom: 180,
+          left: 50,
+          child: _buildAnimatedClassroomElement(Icons.emoji_nature, 32, 4500, 1000),
+        ),
+        Positioned(
+          bottom: 120,
+          right: 60,
+          child: _buildAnimatedClassroomElement(Icons.spa, 28, 3000, 1500),
+        ),
+      ],
+    );
+  }
+  
+  /// Build an animated math element
+  Widget _buildAnimatedMathElement(String text, double size, int duration, int delay) {
+    return TweenAnimationBuilder<double>(
+      tween: Tween<double>(begin: 0, end: 1),
+      duration: Duration(milliseconds: duration),
+      curve: Curves.easeInOut,
+      builder: (context, value, child) {
+        return Transform.translate(
+          offset: Offset(0, 10 * sin(value * 2 * 3.14159)),
+          child: Opacity(
+            opacity: TeacherIntroConstants.backgroundElementOpacity,
+            child: Text(
+              text,
+              style: TextStyle(
+                color: SplashConstants.secondaryAccent,
+                fontSize: size,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+  
+  /// Build an animated sun for photosynthesis
+  Widget _buildAnimatedSun(double size, int duration) {
+    return TweenAnimationBuilder<double>(
+      tween: Tween<double>(begin: 0, end: 1),
+      duration: Duration(milliseconds: duration),
+      curve: Curves.easeInOut,
+      builder: (context, value, child) {
+        return Transform.rotate(
+          angle: 0.1 * sin(value * 2 * 3.14159),
+          child: Opacity(
+            opacity: TeacherIntroConstants.backgroundElementOpacity,
+            child: Icon(
+              Icons.wb_sunny,
+              color: Colors.amber,
+              size: size,
+            ),
+          ),
+        );
+      },
+    );
+  }
+  
+  /// Build an animated plant for photosynthesis
+  Widget _buildAnimatedPlant(double size, int duration) {
+    return TweenAnimationBuilder<double>(
+      tween: Tween<double>(begin: 0.8, end: 1.0),
+      duration: Duration(milliseconds: duration),
+      curve: Curves.easeInOut,
+      builder: (context, value, child) {
+        return Transform.scale(
+          scale: value,
+          child: Opacity(
+            opacity: TeacherIntroConstants.backgroundElementOpacity,
+            child: Icon(
+              Icons.local_florist,
+              color: Colors.green,
+              size: size,
+            ),
+          ),
+        );
+      },
+    );
   }
 
   /// Build the background animation for young users (5-7 years)

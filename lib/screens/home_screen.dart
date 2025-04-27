@@ -4,6 +4,7 @@ import 'package:lottie/lottie.dart';
 import '../models/user_profile.dart';
 import '../utils/constants.dart';
 import '../widgets/animated_mascot.dart';
+import 'teacher_introduction_screen.dart';
 
 /// The home screen of the application, providing quick access to lessons, games, and other features.
 class HomeScreen extends StatefulWidget {
@@ -164,11 +165,25 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   /// Navigate to a specific topic
   void _navigateToTopic(String topicName) {
-    // To be implemented - navigate to topic screen
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('$topicName will be implemented in a future update'),
-        duration: const Duration(seconds: 2),
+    // Navigate to the TeacherIntroductionScreen with the selected topic
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => 
+          TeacherIntroductionScreen(
+            topicName: topicName,
+            // For now, we'll navigate back to home screen after introduction
+            // In a real implementation, this would be the actual lesson screen
+            nextScreen: const HomeScreen(),
+          ),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const begin = 0.0;
+          const end = 1.0;
+          const curve = Curves.easeInOut;
+          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+          var fadeAnimation = animation.drive(tween);
+          return FadeTransition(opacity: fadeAnimation, child: child);
+        },
+        transitionDuration: const Duration(milliseconds: 400),
       ),
     );
   }
