@@ -1,0 +1,99 @@
+# PRD: Generic Lesson Screen for Mathematics (Ages 4–7)
+
+## 1. Objective
+Create a modular, visually engaging **lesson screen** to teach basic math concepts (addition, subtraction, multiplication, division) to young children. The goal is to make learning math **visual, interactive, playful, and voice-guided**, using animated objects and simple language.
+
+---
+
+## 2. Key Features
+
+### 2.1 Visual Math Story
+- Animated **AI Teacher (Alex)** appears on the screen explaining the problem.
+- Example: “Let's add 2 🍎 + 1 🍎!”
+- Visuals: Apples animate in one-by-one.
+
+### 2.2 Problem Display Area
+- Large, colorful equation display:
+  - e.g., “2 + 1 = ?” shown in BIG friendly font.
+- Animated objects (e.g., apples, bananas, balls) represent numbers visually.
+
+### 2.3 Interactive Learning Zone
+- Child can **tap** to count objects.
+- Small hand or sparkle animation shows up as they tap each object.
+
+### 2.4 Answer Options (MCQ Style)
+- 3–4 large, rounded number buttons.
+- E.g., buttons: [2] [3] [4] [5]
+- Big enough for small fingers.
+
+### 2.5 Audio Instructions
+- Friendly recorded voice explains the problem.
+- Example: “Can you tell me how many apples there are altogether?”
+
+### 2.6 Correct/Incorrect Feedback
+- **Correct**:
+  - Confetti animation + Alex says: “Great job!”
+- **Incorrect**:
+  - Gentle encouragement: “Let's try again!” + Highlighted counting aid.
+
+### 2.7 Hints & Try Again
+- Optionally, after 1 wrong attempt, a “Hint” animation plays.
+- Objects flash one-by-one counting together with Alex's voice.
+
+### 2.8 Navigation Buttons
+- [🏠 Home], [↩️ Back], [➡️ Next Problem]
+
+---
+
+## 3. UI/UX Specifications
+
+| Component              | Description |
+|-------------------------|-------------|
+| **Background**          | Soft pastel color (e.g., light blue or yellow) with small floating shapes (stars, clouds) |
+| **AI Teacher Avatar**   | Standing on the side, animated mouth and gestures |
+| **Problem Display**     | Center-aligned, large text and object animations |
+| **Answer Buttons**      | Bottom part of screen, big rounded buttons with numbers |
+| **Audio**               | Background calm music, voice instructions prioritized |
+| **Visual Aids**         | Animated fruits, animals, toys (emoji-style or simple cartoon style) |
+| **Transition Animations**| Smooth fade-in/fade-out between problems; pop-in animation for objects |
+
+---
+
+## 4. Edge Cases Handling
+- **Idle Timeout**: If user is inactive for 30 seconds, Alex prompts gently: “Are you still there? Let’s try together!”
+- **Voice Control Mode**: If available, option to **say the answer** instead of tapping (speech-to-text).
+
+---
+
+## 5. Content Adaptability
+| Math Type        | How it's Visualized  |
+|------------------|-----------------------|
+| Addition         | Group A + Group B merge |
+| Subtraction      | Group A - Removing Group B |
+| Multiplication   | Groups of objects |
+| Division         | Distributing objects into equal groups |
+
+---
+
+## 6. Example Flow
+
+1. Alex: “Let’s solve 2 + 3!”
+2. 2 🍎 + 3 🍎 appear on screen.
+3. Big equation “2 + 3 = ?”
+4. Child taps [5] button.
+5. 🎉 Stars burst animation + Alex: “You got it!”
+6. [Next Problem] button appears.
+
+---
+
+## 7. Platform Adaptation
+- **Tablet and Mobile**: Same experience with slight padding changes.
+- **Web Browser**: Wider layout, but centered interaction area.
+
+---
+
+## 8. Future Enhancements
+- Unlock different **object themes**: e.g., underwater animals, space items.
+- Adaptive difficulty: Slightly harder problems if child answers correctly many times.
+- Customizable AI Teachers (different characters).
+

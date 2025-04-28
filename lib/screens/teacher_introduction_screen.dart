@@ -6,6 +6,7 @@ import 'dart:math';
 import '../models/user_profile.dart';
 import '../utils/constants.dart';
 import '../widgets/animated_mascot.dart';
+import 'basic_math_lesson_screen.dart';
 
 /// A screen that introduces the AI teacher character to the user
 class TeacherIntroductionScreen extends StatefulWidget {
@@ -148,9 +149,26 @@ class _TeacherIntroductionScreenState extends State<TeacherIntroductionScreen>
   void _navigateToNextScreen() {
     _autoTimer?.cancel();
     
+    // Check if the topic is a math topic
+    Widget targetScreen = widget.nextScreen;
+    
+    // For math topics, navigate to the BasicMathLessonScreen
+    String topicLower = widget.topicName.toLowerCase();
+    
+    if (topicLower == "addition" || 
+        topicLower == "subtraction" || 
+        topicLower == "multiplication" || 
+        topicLower == "division") {
+      
+      targetScreen = BasicMathLessonScreen(
+        operationType: widget.topicName, // Use the original topic name to preserve capitalization
+        difficultyLevel: _userProfile?.difficultyProfile ?? "early-elementary",
+      );
+    }
+    
     Navigator.of(context).pushReplacement(
       PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => widget.nextScreen,
+        pageBuilder: (context, animation, secondaryAnimation) => targetScreen,
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           const begin = 0.0;
           const end = 1.0;

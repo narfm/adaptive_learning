@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lottie/lottie.dart';
@@ -83,22 +84,73 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       final userProfileString = prefs.getString('user_profile');
       
       if (userProfileString != null) {
-        // This is a simplified approach - in a real app, we'd parse the JSON properly
-        // For now, we'll create a default profile
-        setState(() {
-          _userProfile = UserProfile.fromAge(8); // Default to age 8 for testing
-          _isLoading = false;
-        });
+        // The stored string is in format: {userAge: 5, userGrade: null, ...}
+        // We need to parse it manually since it's not valid JSON
+        if (userProfileString.startsWith('{') && userProfileString.endsWith('}')) {
+          // Extract the content between { and }
+          final content = userProfileString.substring(1, userProfileString.length - 1);
+          
+          // Split by commas to get key-value pairs
+          final pairs = content.split(',');
+          
+          // Create a map from the pairs
+          final Map<String, dynamic> userProfileMap = {};
+          
+          for (final pair in pairs) {
+            final keyValue = pair.trim().split(':');
+            if (keyValue.length == 2) {
+              final key = keyValue[0].trim();
+              final valueStr = keyValue[1].trim();
+              
+              // Parse the value based on its type
+              dynamic value;
+              if (valueStr == 'null') {
+                value = null;
+              } else if (valueStr == 'true') {
+                value = true;
+              } else if (valueStr == 'false') {
+                value = false;
+              } else if (int.tryParse(valueStr) != null) {
+                value = int.parse(valueStr);
+              } else {
+                value = valueStr; // Treat as string
+              }
+              
+              userProfileMap[key] = value;
+            }
+          }
+          
+          setState(() {
+            _userProfile = UserProfile.fromJson(userProfileMap);
+            _isLoading = false;
+          });
+        } else {
+          // Try standard JSON parsing as fallback
+          try {
+            final userProfileJson = jsonDecode(userProfileString) as Map<String, dynamic>;
+            setState(() {
+              _userProfile = UserProfile.fromJson(userProfileJson);
+              _isLoading = false;
+            });
+          } catch (jsonError) {
+            debugPrint('Error parsing JSON: $jsonError');
+            setState(() {
+              _userProfile = UserProfile.fromAge(8); // Default to age 8 as fallback
+              _isLoading = false;
+            });
+          }
+        }
       } else {
+        // No saved profile, create a default one
         setState(() {
-          _userProfile = UserProfile.fromAge(8); // Default to age 8 for testing
+          _userProfile = UserProfile.fromAge(8); // Default to age 8 only if no profile exists
           _isLoading = false;
         });
       }
     } catch (e) {
       debugPrint('Error loading user profile: $e');
       setState(() {
-        _userProfile = UserProfile.fromAge(8); // Default to age 8 for testing
+        _userProfile = UserProfile.fromAge(8); // Default to age 8 as fallback
         _isLoading = false;
       });
     }
