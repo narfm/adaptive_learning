@@ -4,9 +4,11 @@ import 'dart:convert';
 import 'dart:math' as math;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user_profile.dart';
+import '../utils/audio_service.dart';
 import '../utils/constants.dart';
 import '../widgets/animated_mascot.dart';
 import '../widgets/answer_option_button.dart';
+import '../widgets/example_animation_display.dart';
 import '../widgets/interactive_counting_area.dart';
 import '../widgets/math_problem_display.dart';
 import 'home_screen.dart';
@@ -36,10 +38,12 @@ class _BasicMathLessonScreenState extends State<BasicMathLessonScreen>
   late AnimationController _problemAnimationController;
   late AnimationController _feedbackAnimationController;
   late AnimationController _idleTimeoutController;
+  late AnimationController _exampleAnimationController;
   
   // Animations
   late Animation<double> _problemEntryAnimation;
   late Animation<double> _answerOptionsAnimation;
+  late Animation<double> _exampleEntryAnimation;
   
   // Mascot state
   String _mascotState = AnimatedMascot.idle;
@@ -57,6 +61,11 @@ class _BasicMathLessonScreenState extends State<BasicMathLessonScreen>
   bool _showHint = false;
   bool _problemCompleted = false;
   
+  // Example mode state
+  bool _isExampleMode = true; // Start with example mode
+  int _exampleStep = 0; // Current step in the example animation
+  bool _exampleCompleted = false;
+  
   // Object visualization
   String _objectType = 'apple'; // Default object
   final List<String> _availableObjects = ['apple', 'banana', 'ball', 'star'];
@@ -72,9 +81,15 @@ class _BasicMathLessonScreenState extends State<BasicMathLessonScreen>
   // Audio state
   bool _isAudioEnabled = true;
   
+  // Audio service
+  final AudioService _audioService = AudioService();
+  
   @override
   void initState() {
     super.initState();
+    
+    // Initialize audio service
+    _audioService.initialize();
     
     // Initialize animation controllers
     _mascotController = AnimationController(
@@ -97,6 +112,11 @@ class _BasicMathLessonScreenState extends State<BasicMathLessonScreen>
       duration: const Duration(milliseconds: 1000),
     );
     
+    _exampleAnimationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200),
+    );
+    
     // Set up animations
     _problemEntryAnimation = CurvedAnimation(
       parent: _problemAnimationController,
@@ -108,14 +128,19 @@ class _BasicMathLessonScreenState extends State<BasicMathLessonScreen>
       curve: Interval(0.3, 1.0, curve: Curves.easeInOut),
     );
     
+    _exampleEntryAnimation = CurvedAnimation(
+      parent: _exampleAnimationController,
+      curve: Curves.easeInOut,
+    );
+    
     // Load user profile
     _loadUserProfile();
     
     // Generate first problem
     _generateProblem();
     
-    // Start problem animation
-    _problemAnimationController.forward();
+    // Start in example mode
+    _startExampleMode();
     
     // Set up idle timeout
     _resetIdleTimer();
@@ -127,8 +152,291 @@ class _BasicMathLessonScreenState extends State<BasicMathLessonScreen>
     _problemAnimationController.dispose();
     _feedbackAnimationController.dispose();
     _idleTimeoutController.dispose();
+    _exampleAnimationController.dispose();
     _idleTimer?.cancel();
+    _audioService.dispose();
     super.dispose();
+  }
+  
+  /// Start the example mode animation sequence
+  void _startExampleMode() {
+    setState(() {
+      _isExampleMode = true;
+      _exampleStep = 0;
+      _exampleCompleted = false;
+      _mascotState = AnimatedMascot.thinking;
+    });
+    
+    // Reset animation controllers
+    _exampleAnimationController.reset();
+    
+    // Start the example animation sequence
+    _playExampleAnimation();
+  }
+  
+  /// Play the example animation sequence
+  void _playExampleAnimation() {
+    // Play different animations based on the operation type
+    switch (_operation) {
+      case '+':
+        _playAdditionExample();
+        break;
+      case '-':
+        _playSubtractionExample();
+        break;
+      case '×':
+        _playMultiplicationExample();
+        break;
+      case '÷':
+        _playDivisionExample();
+        break;
+      default:
+        _playAdditionExample(); // Default to addition
+    }
+  }
+  
+  /// Play the addition example animation
+  void _playAdditionExample() {
+    // Step 1: Show first number
+    setState(() {
+      _exampleStep = 0;
+      _mascotState = AnimatedMascot.thinking;
+    });
+    
+    if (_isAudioEnabled) {
+      _audioService.playSound('count');
+    }
+    
+    _exampleAnimationController.forward().then((_) {
+      // Step 2: Show second number
+      setState(() {
+        _exampleStep = 1;
+      });
+      
+      if (_isAudioEnabled) {
+        _audioService.playSound('count');
+      }
+      
+      Future.delayed(const Duration(milliseconds: 1500), () {
+        // Step 3: Show them combining
+         setState(() {
+          _exampleStep = 2;
+        });
+        
+        if (_isAudioEnabled) {
+          _audioService.playSound('combine');
+        }
+        
+        Future.delayed(const Duration(milliseconds: 1500), () {
+          // Step 4: Show result
+          setState(() {
+            _exampleStep = 3;
+          });
+          
+          if (_isAudioEnabled) {
+            _audioService.playSound('correct');
+          }
+          
+          Future.delayed(const Duration(milliseconds: 2000), () {
+            // Transition to problem mode
+            setState(() {
+              _isExampleMode = false;
+              _exampleCompleted = true;
+              _mascotState = AnimatedMascot.idle;
+            });
+            
+            // Start problem animation
+            _problemAnimationController.forward();
+          });
+        });
+      });
+    });
+  }
+  
+  /// Play the subtraction example animation
+  void _playSubtractionExample() {
+    // Step 1: Show first number
+    setState(() {
+      _exampleStep = 0;
+      _mascotState = AnimatedMascot.thinking;
+    });
+    
+    if (_isAudioEnabled) {
+      _audioService.playSound('count');
+    }
+    
+    _exampleAnimationController.forward().then((_) {
+      // Step 2: Show second number
+      setState(() {
+        _exampleStep = 1;
+      });
+      
+      if (_isAudioEnabled) {
+        _audioService.playSound('count');
+      }
+      
+      Future.delayed(const Duration(milliseconds: 1500), () {
+        // Step 3: Show them subtracting
+        setState(() {
+          _exampleStep = 2;
+        });
+        
+        if (_isAudioEnabled) {
+          _audioService.playSound('subtract');
+        }
+        
+        Future.delayed(const Duration(milliseconds: 1500), () {
+          // Step 4: Show result
+          setState(() {
+            _exampleStep = 3;
+          });
+          
+          if (_isAudioEnabled) {
+            _audioService.playSound('correct');
+          }
+          
+          Future.delayed(const Duration(milliseconds: 2000), () {
+            // Transition to problem mode
+            setState(() {
+              _isExampleMode = false;
+              _exampleCompleted = true;
+              _mascotState = AnimatedMascot.idle;
+            });
+            
+            // Start problem animation
+            _problemAnimationController.forward();
+          });
+        });
+      });
+    });
+  }
+  
+  /// Play the multiplication example animation
+  void _playMultiplicationExample() {
+    // Step 1: Show first number
+    setState(() {
+      _exampleStep = 0;
+      _mascotState = AnimatedMascot.thinking;
+    });
+    
+    if (_isAudioEnabled) {
+      _audioService.playSound('count');
+    }
+    
+    _exampleAnimationController.forward().then((_) {
+      // Step 2: Show second number
+      setState(() {
+        _exampleStep = 1;
+      });
+      
+      if (_isAudioEnabled) {
+        _audioService.playSound('count');
+      }
+      
+      Future.delayed(const Duration(milliseconds: 1500), () {
+        // Step 3: Show them multiplying
+        setState(() {
+          _exampleStep = 2;
+        });
+        
+        if (_isAudioEnabled) {
+          _audioService.playSound('multiply');
+        }
+        
+        Future.delayed(const Duration(milliseconds: 1500), () {
+          // Step 4: Show result
+          setState(() {
+            _exampleStep = 3;
+          });
+          
+          if (_isAudioEnabled) {
+            _audioService.playSound('correct');
+          }
+          
+          Future.delayed(const Duration(milliseconds: 2000), () {
+            // Transition to problem mode
+            setState(() {
+              _isExampleMode = false;
+              _exampleCompleted = true;
+              _mascotState = AnimatedMascot.idle;
+            });
+            
+            // Start problem animation
+            _problemAnimationController.forward();
+          });
+        });
+      });
+    });
+  }
+  
+  /// Play the division example animation
+  void _playDivisionExample() {
+    // Step 1: Show first number
+    setState(() {
+      _exampleStep = 0;
+      _mascotState = AnimatedMascot.thinking;
+    });
+    
+    if (_isAudioEnabled) {
+      _audioService.playSound('count');
+    }
+    
+    _exampleAnimationController.forward().then((_) {
+      // Step 2: Show second number
+      setState(() {
+        _exampleStep = 1;
+      });
+      
+      if (_isAudioEnabled) {
+        _audioService.playSound('count');
+      }
+      
+      Future.delayed(const Duration(milliseconds: 1500), () {
+        // Step 3: Show them dividing
+        setState(() {
+          _exampleStep = 2;
+        });
+        
+        if (_isAudioEnabled) {
+          _audioService.playSound('divide');
+        }
+        
+        Future.delayed(const Duration(milliseconds: 1500), () {
+          // Step 4: Show result
+          setState(() {
+            _exampleStep = 3;
+          });
+          
+          if (_isAudioEnabled) {
+            _audioService.playSound('correct');
+          }
+          
+          Future.delayed(const Duration(milliseconds: 2000), () {
+            // Transition to problem mode
+            setState(() {
+              _isExampleMode = false;
+              _exampleCompleted = true;
+              _mascotState = AnimatedMascot.idle;
+            });
+            
+            // Start problem animation
+            _problemAnimationController.forward();
+          });
+        });
+      });
+    });
+  }
+  
+  /// Handle when an example animation step completes
+  void _handleExampleStepComplete(int step) {
+    // This is called by the ExampleAnimationDisplay widget
+    // when each animation step completes
+    if (step == _exampleStep) {
+      // Move to the next step
+      setState(() {
+        _exampleStep = step + 1;
+      });
+    }
   }
 
   /// Load the user profile from shared preferences
@@ -341,9 +649,19 @@ class _BasicMathLessonScreenState extends State<BasicMathLessonScreen>
         // Correct answer
         _mascotState = AnimatedMascot.happy;
         _problemCompleted = true;
+        
+        // Play correct sound
+        if (_isAudioEnabled) {
+          _audioService.playSound('correct');
+        }
       } else {
         // Incorrect answer
         _mascotState = AnimatedMascot.thinking;
+        
+        // Play incorrect sound
+        if (_isAudioEnabled) {
+          _audioService.playSound('incorrect');
+        }
         
         // Show hint after first wrong attempt
         if (_attemptCount >= 1) {
@@ -362,6 +680,11 @@ class _BasicMathLessonScreenState extends State<BasicMathLessonScreen>
     // Reset idle timer
     _resetIdleTimer();
     
+    // Play sound
+    if (_isAudioEnabled) {
+      _audioService.playSound('slide');
+    }
+    
     // Reset animations
     _problemAnimationController.reset();
     
@@ -374,6 +697,11 @@ class _BasicMathLessonScreenState extends State<BasicMathLessonScreen>
 
   /// Navigate back to the home screen
   void _navigateToHome() {
+    // Play sound
+    if (_isAudioEnabled) {
+      _audioService.playSound('click');
+    }
+    
     Navigator.of(context).pushReplacement(
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) => const HomeScreen(),
@@ -517,47 +845,10 @@ class _BasicMathLessonScreenState extends State<BasicMathLessonScreen>
                     
                     const SizedBox(height: 20),
                     
-                    // Problem display area
-                    FadeTransition(
-                      opacity: _problemEntryAnimation,
-                      child: SlideTransition(
-                        position: Tween<Offset>(
-                          begin: const Offset(0, 0.2),
-                          end: Offset.zero,
-                        ).animate(_problemEntryAnimation),
-                        child: MathProblemDisplay(
-                          firstNumber: _firstNumber,
-                          secondNumber: _secondNumber,
-                          operation: _operation,
-                          objectType: _objectType,
-                          showHint: _showHint,
-                        ),
-                      ),
-                    ),
-                    
-                    const SizedBox(height: 30),
-                    
-                    // Interactive counting area
-                    Expanded(
-                      child: FadeTransition(
-                        opacity: _problemEntryAnimation,
-                        child: InteractiveCountingArea(
-                          firstNumber: _firstNumber,
-                          secondNumber: _secondNumber,
-                          operation: _operation,
-                          objectType: _objectType,
-                          showHint: _showHint,
-                        ),
-                      ),
-                    ),
-                    
-                    const SizedBox(height: 20),
-                    
-                    // Answer options
-                    FadeTransition(
-                      opacity: _answerOptionsAnimation,
-                      child: _buildAnswerOptions(),
-                    ),
+                    // Example mode or problem mode content
+                    _isExampleMode
+                        ? _buildExampleModeContent()
+                        : _buildProblemModeContent(),
                     
                     const SizedBox(height: 20),
                     
@@ -635,6 +926,13 @@ class _BasicMathLessonScreenState extends State<BasicMathLessonScreen>
           onPressed: () {
             setState(() {
               _isAudioEnabled = !_isAudioEnabled;
+              // Update audio service state
+              _audioService.isAudioEnabled = _isAudioEnabled;
+              
+              // Play a click sound if enabling audio
+              if (_isAudioEnabled) {
+                _audioService.playSound('click');
+              }
             });
             _resetIdleTimer();
           },
@@ -850,6 +1148,101 @@ class _BasicMathLessonScreenState extends State<BasicMathLessonScreen>
           ),
         );
       },
+    );
+  }
+  
+  /// Build the content for example mode
+  Widget _buildExampleModeContent() {
+    return Column(
+      children: [
+        // Example animation display
+        FadeTransition(
+          opacity: _exampleEntryAnimation,
+          child: ExampleAnimationDisplay(
+            firstNumber: _firstNumber,
+            secondNumber: _secondNumber,
+            operation: _operation,
+            objectType: _objectType,
+            animationStep: _exampleStep,
+            onStepComplete: _handleExampleStepComplete,
+          ),
+        ),
+        
+        const SizedBox(height: 20),
+        
+        // Mode indicator
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(
+            color: SplashConstants.primaryAccent.withOpacity(0.2),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: SplashConstants.primaryAccent,
+              width: 2,
+            ),
+          ),
+          child: const Text(
+            "Watch the Example",
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: SplashConstants.textColor,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+  
+  /// Build the content for problem mode
+  Widget _buildProblemModeContent() {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.5, // Set a bounded height
+      child: Column(
+        children: [
+          // Problem display area
+          FadeTransition(
+            opacity: _problemEntryAnimation,
+            child: SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(0, 0.2),
+                end: Offset.zero,
+              ).animate(_problemEntryAnimation),
+              child: MathProblemDisplay(
+                firstNumber: _firstNumber,
+                secondNumber: _secondNumber,
+                operation: _operation,
+                objectType: _objectType,
+                showHint: _showHint,
+              ),
+            ),
+          ),
+          
+          const SizedBox(height: 30),
+          
+          // Interactive counting area
+          Expanded(
+            child: FadeTransition(
+              opacity: _problemEntryAnimation,
+              child: InteractiveCountingArea(
+                firstNumber: _firstNumber,
+                secondNumber: _secondNumber,
+                operation: _operation,
+                objectType: _objectType,
+                showHint: _showHint,
+              ),
+            ),
+          ),
+          
+          const SizedBox(height: 20),
+          
+          // Answer options
+          FadeTransition(
+            opacity: _answerOptionsAnimation,
+            child: _buildAnswerOptions(),
+          ),
+        ],
+      ),
     );
   }
 }
