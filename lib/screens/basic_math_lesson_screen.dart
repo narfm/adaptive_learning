@@ -818,62 +818,64 @@ class _BasicMathLessonScreenState extends State<BasicMathLessonScreen>
               // Main content
               Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    // Top navigation bar
-                    _buildTopNavigationBar(),
-                    
-                    const SizedBox(height: 10),
-                    
-                    // AI Teacher with speech bubble
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Animated mascot
-                        AnimatedMascot(
-                          state: _mascotState,
-                          controller: _mascotController,
-                          customMessage: _isIdle 
-                              ? "Are you still there? Let's try together!"
-                              : _getProblemInstruction(),
-                        ),
-                        
-                        const Spacer(),
-                      ],
-                    ),
-                    
-                    const SizedBox(height: 20),
-                    
-                    // Example mode or problem mode content
-                    _isExampleMode
-                        ? _buildExampleModeContent()
-                        : _buildProblemModeContent(),
-                    
-                    const SizedBox(height: 20),
-                    
-                    // Feedback area
-                    AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      height: _showFeedback ? 60 : 0,
-                      child: _showFeedback
-                          ? _buildFeedbackArea()
-                          : const SizedBox.shrink(),
-                    ),
-                    
-                    const SizedBox(height: 10),
-                    
-                    // Next problem button (only shown after correct answer)
-                    AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      height: _problemCompleted ? 60 : 0,
-                      child: _problemCompleted
-                          ? _buildNextProblemButton()
-                          : const SizedBox.shrink(),
-                    ),
-                    
-                    const SizedBox(height: 10),
-                  ],
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      // Top navigation bar
+                      _buildTopNavigationBar(),
+                      
+                      const SizedBox(height: 10),
+                      
+                      // AI Teacher with speech bubble
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Animated mascot
+                          AnimatedMascot(
+                            state: _mascotState,
+                            controller: _mascotController,
+                            customMessage: _isIdle 
+                                ? "Are you still there? Let's try together!"
+                                : _getProblemInstruction(),
+                          ),
+                          
+                          const Spacer(),
+                        ],
+                      ),
+                      
+                      const SizedBox(height: 20),
+                      
+                      // Example mode or problem mode content
+                      _isExampleMode
+                          ? _buildExampleModeContent()
+                          : _buildProblemModeContent(),
+                      
+                      const SizedBox(height: 20),
+                      
+                      // Feedback area
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        height: _showFeedback ? 60 : 0,
+                        child: _showFeedback
+                            ? _buildFeedbackArea()
+                            : const SizedBox.shrink(),
+                      ),
+                      
+                      const SizedBox(height: 10),
+                      
+                      // Next problem button (only shown after correct answer)
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        height: _problemCompleted ? 60 : 0,
+                        child: _problemCompleted
+                            ? _buildNextProblemButton()
+                            : const SizedBox.shrink(),
+                      ),
+                      
+                      const SizedBox(height: 10),
+                    ],
+                  ),
                 ),
               ),
               
@@ -1196,52 +1198,57 @@ class _BasicMathLessonScreenState extends State<BasicMathLessonScreen>
   
   /// Build the content for problem mode
   Widget _buildProblemModeContent() {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.5, // Set a bounded height
-      child: Column(
-        children: [
-          // Problem display area
-          FadeTransition(
-            opacity: _problemEntryAnimation,
-            child: SlideTransition(
-              position: Tween<Offset>(
-                begin: const Offset(0, 0.2),
-                end: Offset.zero,
-              ).animate(_problemEntryAnimation),
-              child: MathProblemDisplay(
-                firstNumber: _firstNumber,
-                secondNumber: _secondNumber,
-                operation: _operation,
-                objectType: _objectType,
-                showHint: _showHint,
-              ),
-            ),
-          ),
-          
-          const SizedBox(height: 30),
-          
-          // Interactive counting area
-          Expanded(
-            child: FadeTransition(
+    return Container(
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.5,
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            // Problem display area
+            FadeTransition(
               opacity: _problemEntryAnimation,
-              child: InteractiveCountingArea(
-                firstNumber: _firstNumber,
-                secondNumber: _secondNumber,
-                operation: _operation,
-                objectType: _objectType,
-                showHint: _showHint,
+              child: SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(0, 0.2),
+                  end: Offset.zero,
+                ).animate(_problemEntryAnimation),
+                child: MathProblemDisplay(
+                  firstNumber: _firstNumber,
+                  secondNumber: _secondNumber,
+                  operation: _operation,
+                  objectType: _objectType,
+                  showHint: _showHint,
+                ),
               ),
             ),
-          ),
-          
-          const SizedBox(height: 20),
-          
-          // Answer options
-          FadeTransition(
-            opacity: _answerOptionsAnimation,
-            child: _buildAnswerOptions(),
-          ),
-        ],
+            
+            const SizedBox(height: 30),
+            
+            // Interactive counting area
+            SizedBox(
+              height: 200, // Fixed height for the counting area
+              child: FadeTransition(
+                opacity: _problemEntryAnimation,
+                child: InteractiveCountingArea(
+                  firstNumber: _firstNumber,
+                  secondNumber: _secondNumber,
+                  operation: _operation,
+                  objectType: _objectType,
+                  showHint: _showHint,
+                ),
+              ),
+            ),
+            
+            const SizedBox(height: 20),
+            
+            // Answer options
+            FadeTransition(
+              opacity: _answerOptionsAnimation,
+              child: _buildAnswerOptions(),
+            ),
+          ],
+        ),
       ),
     );
   }
